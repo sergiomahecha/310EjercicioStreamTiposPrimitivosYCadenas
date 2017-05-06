@@ -33,7 +33,7 @@ public class GestoraPersonas extends ArrayList<Persona>{
         }
         return devolver;
     }
-
+//probando git
     private void EscribirArchivo() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
