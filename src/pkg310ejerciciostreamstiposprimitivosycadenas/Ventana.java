@@ -5,16 +5,25 @@
  */
 package pkg310ejerciciostreamstiposprimitivosycadenas;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.regex.Pattern;
+import javax.swing.JComponent;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+
 /**
  *
  * @author sergio
  */
 public class Ventana extends javax.swing.JFrame {
 
+    private GestoraPersonas gestora;
     /**
      * Creates new form Ventana
      */
     public Ventana() {
+        gestora=GestoraPersonas.getINSTANCE();
         initComponents();
     }
 
@@ -39,17 +48,7 @@ public class Ventana extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
+        jTable1.setModel(new ModeloTabla(gestora));
         jScrollPane1.setViewportView(jTable1);
 
         jLabel1.setText("Nombre");
@@ -57,8 +56,18 @@ public class Ventana extends javax.swing.JFrame {
         jLabel2.setText("Edad");
 
         jButtonCancelar.setText("Cancelar");
+        jButtonCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCancelarActionPerformed(evt);
+            }
+        });
 
         jButtonGuardar.setText("Guardar");
+        jButtonGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonGuardarActionPerformed(evt);
+            }
+        });
 
         jButtonEliminar.setText("Eliminar contenido del archivo");
 
@@ -118,6 +127,23 @@ public class Ventana extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButtonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelarActionPerformed
+        limpiar();
+    }//GEN-LAST:event_jButtonCancelarActionPerformed
+
+    private void jButtonGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGuardarActionPerformed
+        try {
+            comprobar();
+            procesar();
+//        limpiar();
+        } catch (MyException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage());
+            JTextField componente=(JTextField)ex.getComponente();
+            componente.selectAll();
+            componente.requestFocus();
+        }
+    }//GEN-LAST:event_jButtonGuardarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -164,4 +190,27 @@ public class Ventana extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldEdad;
     private javax.swing.JTextField jTextFieldNombre;
     // End of variables declaration//GEN-END:variables
+
+    private void limpiar() {
+        jTextFieldNombre.setText(null);
+        jTextFieldEdad.setText(null);
+        jTextFieldNombre.requestFocus();
+    }
+
+    private void comprobar() throws MyException {
+        if(!Pattern.matches("[a-záéíóúäëïöüâêîôû ]{1,}[a-záéíóúäëïöüâêîôû]{0,}", jTextFieldNombre.getText().toLowerCase())){
+            throw new MyException(jTextFieldNombre, "El nombre es incorrecto");
+        }
+        if(!Pattern.matches("[0-9]{1}[0-9]{0,1}|100|101|102|103", jTextFieldEdad.getText())){
+            throw new MyException(jTextFieldEdad, "Edad incorrecta introduzca una edad entre 0 y 103 años");
+        }
+    }
+
+    private void procesar() {
+        String nombre=jTextFieldNombre.getText();
+        Integer edad=Integer.parseInt(jTextFieldEdad.getText());
+        Persona nuevaPersona=new Persona(nombre, edad);
+        gestora.guardarPersona(nuevaPersona);
+        jTable1.repaint();
+    }
 }

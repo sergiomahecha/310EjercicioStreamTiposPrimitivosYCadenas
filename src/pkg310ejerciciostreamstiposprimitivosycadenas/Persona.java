@@ -5,6 +5,7 @@
  */
 package pkg310ejerciciostreamstiposprimitivosycadenas;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -12,7 +13,7 @@ import java.util.Objects;
  *
  * @author sergio
  */
-public class Persona extends HashMap<Claves, Object> implements Comparable<Persona>{
+public class Persona extends HashMap<Claves, Object> implements Comparable<Persona>, Serializable{
     
     public Persona(String nombre, Integer edad) {
         put(Claves.NOMBRE, nombre);
