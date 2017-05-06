@@ -41,7 +41,7 @@ public class GestoraPersonas extends ArrayList<Persona>{
         boolean devolver=false;
         if(!yaExiste(p)){
             devolver=this.add(p);
-//            this.escribirArchivo();
+            this.escribirArchivo();
         }
         return devolver;
     }

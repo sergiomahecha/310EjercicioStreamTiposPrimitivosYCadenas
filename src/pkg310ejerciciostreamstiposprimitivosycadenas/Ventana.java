@@ -25,6 +25,7 @@ public class Ventana extends javax.swing.JFrame {
     public Ventana() {
         gestora=GestoraPersonas.getINSTANCE();
         initComponents();
+        jTextFieldNombre.requestFocus();
     }
 
     /**
@@ -135,7 +136,7 @@ public class Ventana extends javax.swing.JFrame {
         try {
             comprobar();
             procesar();
-//        limpiar();
+            limpiar();
         } catch (MyException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage());
             JTextField componente=(JTextField)ex.getComponente();
@@ -208,9 +209,15 @@ public class Ventana extends javax.swing.JFrame {
 
     private void procesar() {
         String nombre=jTextFieldNombre.getText();
-        Integer edad=Integer.parseInt(jTextFieldEdad.getText());
+        Integer edad=(Integer)Integer.parseInt(jTextFieldEdad.getText());
         Persona nuevaPersona=new Persona(nombre, edad);
-        gestora.guardarPersona(nuevaPersona);
-        jTable1.repaint();
+        if(gestora.guardarPersona(nuevaPersona)){
+            jTable1.revalidate();
+            JOptionPane.showMessageDialog(this, "Los datos se han guardado");
+        }else{
+            JOptionPane.showMessageDialog(this, "Ya existe otra persona con las mismas características");
+            limpiar();
+        }
+        
     }
 }
