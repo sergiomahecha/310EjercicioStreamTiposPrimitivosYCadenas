@@ -71,6 +71,11 @@ public class Ventana extends javax.swing.JFrame {
         });
 
         jButtonEliminar.setText("Eliminar contenido del archivo");
+        jButtonEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonEliminarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -145,6 +150,16 @@ public class Ventana extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButtonGuardarActionPerformed
 
+    private void jButtonEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEliminarActionPerformed
+        if(gestora.borrarArchivo()){
+            jTable1.revalidate();
+            JOptionPane.showMessageDialog(this, "El archivo se ha borrado");
+            jTextFieldNombre.requestFocus();
+        }else{
+            JOptionPane.showMessageDialog(this, "El archivo no existe");
+        }
+    }//GEN-LAST:event_jButtonEliminarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -199,16 +214,16 @@ public class Ventana extends javax.swing.JFrame {
     }
 
     private void comprobar() throws MyException {
-        if(!Pattern.matches("[a-záéíóúäëïöüâêîôû ]{1,}[a-záéíóúäëïöüâêîôû]{0,}", jTextFieldNombre.getText().toLowerCase())){
+        if(!Pattern.matches("[a-záéíóúäëïöüâêîôû]{1,}|[a-záéíóúäëïöüâêîôû]{1,} [a-záéíóúäëïöüâêîôû]{0,}", jTextFieldNombre.getText().toLowerCase())){
             throw new MyException(jTextFieldNombre, "El nombre es incorrecto");
         }
-        if(!Pattern.matches("[0-9]{1}[0-9]{0,1}|100|101|102|103", jTextFieldEdad.getText())){
-            throw new MyException(jTextFieldEdad, "Edad incorrecta introduzca una edad entre 0 y 103 años");
+        if(!Pattern.matches("[0-9]{1}[0-9]{0,1}|10[0-9]{1}|110", jTextFieldEdad.getText())){
+            throw new MyException(jTextFieldEdad, "Edad incorrecta introduzca una edad entre 0 y 110 años");
         }
     }
 
     private void procesar() {
-        String nombre=jTextFieldNombre.getText();
+        String nombre=jTextFieldNombre.getText().toUpperCase();
         Integer edad=(Integer)Integer.parseInt(jTextFieldEdad.getText());
         Persona nuevaPersona=new Persona(nombre, edad);
         if(gestora.guardarPersona(nuevaPersona)){

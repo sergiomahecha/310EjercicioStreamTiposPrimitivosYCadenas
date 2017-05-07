@@ -5,6 +5,7 @@
  */
 package pkg310ejerciciostreamstiposprimitivosycadenas;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -12,6 +13,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -41,6 +44,7 @@ public class GestoraPersonas extends ArrayList<Persona>{
         boolean devolver=false;
         if(!yaExiste(p)){
             devolver=this.add(p);
+            Collections.sort(this);
             this.escribirArchivo();
         }
         return devolver;
@@ -73,6 +77,17 @@ public class GestoraPersonas extends ArrayList<Persona>{
             Logger.getLogger(GestoraPersonas.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+    }
+    
+    public boolean borrarArchivo(){
+        boolean devolver=false;
+        File archivo=new File("/Users/sergiohurtado/Documents/netBeansProjects/310EjercicioStreamTiposPrimitivosYCadenas", FILENAME);
+        if(archivo.exists()){
+            archivo.delete();
+            this.clear();
+            devolver=true;
+        }
+        return devolver;
     }
     
 }
