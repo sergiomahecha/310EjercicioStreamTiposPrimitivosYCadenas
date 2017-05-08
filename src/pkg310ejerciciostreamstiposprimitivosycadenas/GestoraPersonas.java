@@ -84,7 +84,7 @@ public class GestoraPersonas extends ArrayList<Persona>{
         File archivo=new File(".", FILENAME);
         if(archivo.exists()){
             archivo.delete();
-            
+            this.clear();
             devolver=true;
         }
         return devolver;

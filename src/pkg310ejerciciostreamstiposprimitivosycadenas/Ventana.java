@@ -152,7 +152,6 @@ public class Ventana extends javax.swing.JFrame {
 
     private void jButtonEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEliminarActionPerformed
         if(gestora.borrarArchivo()){
-            gestora=GestoraPersonas.getINSTANCE();
             jTable1.revalidate();
             JOptionPane.showMessageDialog(this, "El archivo se ha borrado");
             jTextFieldNombre.requestFocus();
