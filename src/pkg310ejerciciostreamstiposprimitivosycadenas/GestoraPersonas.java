@@ -89,14 +89,13 @@ public class GestoraPersonas extends ArrayList<Persona>{
     }
     
     public boolean borrarContenidoArchivo(){
-        boolean devolver=false;
         File archivo=new File(".", FILENAME);
-        if(archivo.exists()){
-            archivo.delete();
+        try(FileOutputStream escritor=new FileOutputStream(archivo)){
             this.clear();
-            devolver=true;
+            return true;
+        } catch (IOException ex) {
+            return false;
         }
-        return devolver;
     }
     
 }
