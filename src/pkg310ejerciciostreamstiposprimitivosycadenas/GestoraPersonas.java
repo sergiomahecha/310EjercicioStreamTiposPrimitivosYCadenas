@@ -81,10 +81,10 @@ public class GestoraPersonas extends ArrayList<Persona>{
     
     public boolean borrarArchivo(){
         boolean devolver=false;
-        File archivo=new File("/Users/sergiohurtado/Documents/netBeansProjects/310EjercicioStreamTiposPrimitivosYCadenas", FILENAME);
+        File archivo=new File(".", FILENAME);
         if(archivo.exists()){
             archivo.delete();
-            this.clear();
+            
             devolver=true;
         }
         return devolver;
