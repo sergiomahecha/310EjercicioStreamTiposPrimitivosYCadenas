@@ -5,6 +5,9 @@
  */
 package pkg310ejerciciostreamstiposprimitivosycadenas;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -25,7 +28,6 @@ import java.util.logging.Logger;
 public class GestoraPersonas extends ArrayList<Persona>{
     
     private Persona laPersona;
-    private static GestoraPersonas INSTANCE;
     private static String FILENAME="personas.dat";
 
     private GestoraPersonas() {
@@ -51,8 +53,11 @@ public class GestoraPersonas extends ArrayList<Persona>{
     }
     
     private void escribirArchivo() {
-        try (ObjectOutputStream escritor=new ObjectOutputStream(new FileOutputStream(FILENAME))){
-            escritor.writeObject(this);
+        try (DataOutputStream escritor=new DataOutputStream(new FileOutputStream(FILENAME))){
+            for(Persona laPersona:this){
+                escritor.writeUTF(laPersona.getNombre());
+                escritor.writeInt(laPersona.getEdad());
+            }
         } catch (IOException ex) {
             Logger.getLogger(GestoraPersonas.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -67,21 +72,25 @@ public class GestoraPersonas extends ArrayList<Persona>{
     }
     
     private static GestoraPersonas leerArchivo(){
-        try (ObjectInputStream lector=new ObjectInputStream(new FileInputStream(FILENAME))){
-            return (GestoraPersonas)lector.readObject();
+        GestoraPersonas nuevaGestora=new GestoraPersonas();
+        try (DataInputStream lector=new DataInputStream(new FileInputStream(FILENAME))){
+            do {
+                Persona nuevaPersona=new Persona(lector.readUTF(), lector.readInt());
+                nuevaGestora.add(nuevaPersona);
+            } while (true);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(GestoraPersonas.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(GestoraPersonas.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (EOFException ex) {
+            return nuevaGestora;
         } catch (IOException ex) {
-            Logger.getLogger(GestoraPersonas.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
         }
         return null;
     }
     
     public boolean borrarArchivo(){
         boolean devolver=false;
-        File archivo=new File("/Users/sergiohurtado/Documents/netBeansProjects/310EjercicioStreamTiposPrimitivosYCadenas", FILENAME);
+        File archivo=new File(".", FILENAME);
         if(archivo.exists()){
             archivo.delete();
             this.clear();
