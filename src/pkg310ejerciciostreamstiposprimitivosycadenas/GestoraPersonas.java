@@ -88,7 +88,7 @@ public class GestoraPersonas extends ArrayList<Persona>{
         return null;
     }
     
-    public boolean borrarArchivo(){
+    public boolean borrarContenidoArchivo(){
         boolean devolver=false;
         File archivo=new File(".", FILENAME);
         if(archivo.exists()){
