@@ -214,10 +214,10 @@ public class Ventana extends javax.swing.JFrame {
     }
 
     private void comprobar() throws MyException {
-        if(!Pattern.matches("[a-záéíóúäëïöüâêîôû]{1,}|[a-záéíóúäëïöüâêîôû]{1,} [a-záéíóúäëïöüâêîôû]{0,}", jTextFieldNombre.getText().toLowerCase())){
+        if(!Pattern.matches("[a-zñáéíóúäëïöüâêîôû]+|[a-zñáéíóúäëïöüâêîôû]+ [a-zñáéíóúäëïöüâêîôû]*", jTextFieldNombre.getText().toLowerCase())){
             throw new MyException(jTextFieldNombre, "El nombre es incorrecto");
         }
-        if(!Pattern.matches("[0-9]{1}[0-9]{0,1}|10[0-9]{1}|110", jTextFieldEdad.getText())){
+        if(!Pattern.matches("([0-9])|([1-9][0-9])|(10[0-9])|(110)", jTextFieldEdad.getText())){
             throw new MyException(jTextFieldEdad, "Edad incorrecta introduzca una edad entre 0 y 110 años");
         }
     }

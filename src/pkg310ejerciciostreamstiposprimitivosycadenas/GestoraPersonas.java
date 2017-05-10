@@ -27,12 +27,27 @@ import java.util.logging.Logger;
  */
 public class GestoraPersonas extends ArrayList<Persona>{
     
+    /**
+     * Campo que representa a la persona que se guardara.
+     */
     private Persona laPersona;
+    
+    /**
+     * Campo que representa el nombre del archivo donde se guardaran los datos de la gestora.
+     */
     private static String FILENAME="personas.dat";
 
+    /**
+     * Constructor de la clase que esta vacio.
+     */
     private GestoraPersonas() {
     }
     
+    /**
+     * 
+     * @param p Objeto de la clase persona del cual queremos saber si en el ArrayList existen sus mismos datos.
+     * @return true si los datos de la Persona p ya estan en el ArrayList y false si no lo estan.
+     */
     private boolean yaExiste(Persona p){
         for(Persona unaPersona:this){
             if(unaPersona.equals(p)){
@@ -42,6 +57,11 @@ public class GestoraPersonas extends ArrayList<Persona>{
         return false;
     }
     
+    /**
+     * Este metodo comprueba si la Persona no existe en el ArrayList mediante el metodo yaExiste(), si no existe lo guarda.
+     * @param p Objeto de la clase persona que se quiere guardar en el ArrayList.
+     * @return true si se consigue guardar a la persona y false en caso contrario.
+     */
     public boolean guardarPersona(Persona p){
         boolean devolver=false;
         if(!yaExiste(p)){
@@ -52,6 +72,9 @@ public class GestoraPersonas extends ArrayList<Persona>{
         return devolver;
     }
     
+    /**
+     * Metodo que escribe los datos del ArrayList en fichero personas.dat.
+     */
     private void escribirArchivo() {
         try (DataOutputStream escritor=new DataOutputStream(new FileOutputStream(FILENAME))){
             for(Persona laPersona:this){
@@ -63,6 +86,10 @@ public class GestoraPersonas extends ArrayList<Persona>{
         }
     }
     
+    /**
+     * Metodo para hacer que la instacia de la gestora sea unica.
+     * @return una GestoraPersonas con los datos de personas.dat si los hay, si no una nueva GestoraPersonas.
+     */
     public static GestoraPersonas getINSTANCE() {
         GestoraPersonas leido=leerArchivo();
         if(leido==null){
@@ -71,6 +98,10 @@ public class GestoraPersonas extends ArrayList<Persona>{
         return leido;
     }
     
+    /**
+     * 
+     * @return una GestoraPersonas si hay datos en el fichero personas.dat, si no devuelve null.
+     */
     private static GestoraPersonas leerArchivo(){
         GestoraPersonas nuevaGestora=new GestoraPersonas();
         try (DataInputStream lector=new DataInputStream(new FileInputStream(FILENAME))){
@@ -88,6 +119,10 @@ public class GestoraPersonas extends ArrayList<Persona>{
         return null;
     }
     
+    /**
+     * Método que borra los datos del archiv personas.dat y si los borra vacia el arrayList.
+     * @return true si los datos del archivo personas.dat se han borrado y false en caso contrario.
+     */
     public boolean borrarContenidoArchivo(){
         File archivo=new File(".", FILENAME);
         try(FileOutputStream escritor=new FileOutputStream(archivo)){

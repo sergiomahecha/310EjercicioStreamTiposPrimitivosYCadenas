@@ -6,7 +6,7 @@
 package pkg310ejerciciostreamstiposprimitivosycadenas;
 
 /**
- *
+ * Enum para dar las claves de la clase persona, ya que la clase persona es un HashMap.
  * @author sergio
  */
 public enum Claves {
